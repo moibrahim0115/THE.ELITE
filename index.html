@@ -2,992 +2,518 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>The Elite Card | بطاقة الخصم الفاخرة</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Elite Card</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@700;800&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@700;800&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<!-- مكتبة الأيقونات العالمية Lucide (البديل الأفضل والأشبه بتصميمات أبل) -->
 <script src="https://unpkg.com/lucide@latest"></script>
 <style>
-/* ═══════════════════════════════════════════════════
-   CSS RESET & BASE
-   ═══════════════════════════════════════════════════ */
 :root {
-  --bg:        #080b10;
-  --bg2:       #0f1219;
-  --card:      #13161f;
-  --raised:    #1c2030;
-  --border:    rgba(255,255,255,0.065);
-  --border-hi: rgba(201,168,76,0.35);
-  --gold:      #C9A84C;
-  --gold-light:#e0c068;
-  --gold-dark: #a08030;
-  --gold-dim:  rgba(201,168,76,0.1);
-  --gold-glow: rgba(201,168,76,0.22);
-  --t1:        #edeae2;
-  --t2:        #7a7a7a;
-  --t3:        #333;
-  --mono:      'Space Mono', monospace;
-  --sans:      'Tajawal', sans-serif;
-  --display:   'Syne', sans-serif;
-  --r:         8px;
-  --r-lg:      16px;
-  --nav-h:     64px;
-  --safe-top:  env(safe-area-inset-top, 0px);
-  --safe-bot:  env(safe-area-inset-bottom, 0px);
+  --bg:       #080b10;
+  --bg2:      #0f1219;
+  --card-bg:  #13161f;
+  --raised:   #1c2030;
+  --border:   rgba(255,255,255,0.065);
+  --border-hi:rgba(201,168,76,0.3);
+  --gold:     #C9A84C;
+  --gold-dim: rgba(201,168,76,0.1);
+  --gold-glow:rgba(201,168,76,0.22);
+  --t1:       #edeae2;
+  --t2:       #7a7a7a;
+  --t3:       #333;
+  --mono:     'Space Mono', monospace;
+  --sans:     'Tajawal', sans-serif;
+  --display:  'Syne', sans-serif;
+  --r:        6px;
+  --r-lg:     14px;
+  --nav-h:    60px;
 }
 
-*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 20px); }
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; scroll-padding-top:var(--nav-h); }
 body {
-  background: var(--bg); color: var(--t1);
-  font-family: var(--sans); font-size: 15px; line-height: 1.7;
-  overflow-x: hidden; -webkit-font-smoothing: antialiased;
+  background:var(--bg); color:var(--t1);
+  font-family:var(--sans); font-size:15px; line-height:1.7;
+  overflow-x:hidden; -webkit-font-smoothing:antialiased;
 }
-a { color: inherit; text-decoration: none; }
-button, input { font-family: inherit; outline: none; }
+a { color:inherit; text-decoration:none; }
 
-/* ═══════════════════════════════════════════════════
-   SCROLLBAR
-   ═══════════════════════════════════════════════════ */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.25); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(201,168,76,0.45); }
-.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
-.scrollbar-hide::-webkit-scrollbar { display: none; }
-
-/* ═══════════════════════════════════════════════════
-   GOLD TEXT GRADIENT
-   ═══════════════════════════════════════════════════ */
-.text-gold {
-  background: linear-gradient(135deg, #C9A84C, #e0c068, #C9A84C);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* ═══════════════════════════════════════════════════
-   LOADING SCREEN
-   ═══════════════════════════════════════════════════ */
-#loader {
-  position: fixed; inset: 0; z-index: 9999;
-  background: var(--bg);
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  transition: opacity 0.6s cubic-bezier(0.8,0,0.2,1), visibility 0.6s;
-}
-#loader.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
-
-.loader-glow {
-  position: absolute; width: 260px; height: 260px; border-radius: 50%;
-  background: radial-gradient(circle, rgba(201,168,76,0.15) 0%, transparent 70%);
-  filter: blur(40px); opacity: 0.3;
-}
-
-.loader-icon {
-  width: 80px; height: 80px; border-radius: 20px;
-  background: linear-gradient(135deg, #C9A84C, #a08030);
-  display: flex; align-items: center; justify-content: center;
-  position: relative; margin-bottom: 2rem;
-  animation: loader-pulse 2s ease-in-out infinite;
-}
-.loader-icon svg { width: 40px; height: 40px; color: var(--bg); }
-.loader-ring {
-  position: absolute; inset: 0; border-radius: 20px;
-  border: 2px solid rgba(201,168,76,0.3);
-  animation: ring-fade 2s ease-in-out infinite;
-}
-
-.loader-letters {
-  display: flex; gap: 4px; font-family: var(--display); font-size: 1.5rem;
-  font-weight: 800; letter-spacing: 0.1em; margin-bottom: 2.5rem;
-  direction: ltr;
-}
-.loader-letters span {
-  display: inline-block; opacity: 0; transform: translateY(10px);
-  color: var(--gold); transition: all 0.3s ease-out;
-}
-.loader-letters span.show { opacity: 1; transform: translateY(0); }
-
-.loader-bar-track {
-  width: 260px; height: 2px; border-radius: 2px;
-  background: rgba(255,255,255,0.08); overflow: hidden; position: relative;
-}
-.loader-bar-fill {
-  height: 100%; border-radius: 2px; width: 0%;
-  background: linear-gradient(90deg, #C9A84C, #e0c068, #C9A84C);
-  transition: width 0.05s linear; position: relative;
-}
-.loader-bar-fill::after {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
-  width: 50%; animation: shimmer 1.5s infinite;
-}
-.loader-bar-glow {
-  position: absolute; bottom: -4px; left: 0; height: 8px; border-radius: 4px;
-  background: linear-gradient(90deg, rgba(201,168,76,0.3), transparent);
-  filter: blur(6px); width: 0%; transition: width 0.05s linear;
-}
-
-.loader-tagline {
-  font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.3em;
-  text-transform: uppercase; color: var(--t2); margin-top: 1.5rem;
-  opacity: 0; animation: fade-in 0.5s 0.5s forwards;
-}
-
-@keyframes loader-pulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(201,168,76,0.2); transform: scale(1); }
-  50%      { box-shadow: 0 0 50px rgba(201,168,76,0.4); transform: scale(0.97); }
-}
-@keyframes ring-fade {
-  0%, 100% { opacity: 0; }
-  50%      { opacity: 0.5; }
-}
-@keyframes shimmer {
-  0%   { transform: translateX(-100%); }
-  100% { transform: translateX(200%); }
-}
-@keyframes fade-in {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 0.4; transform: none; }
-}
-
-/* ═══════════════════════════════════════════════════
-   SCANLINE OVERLAY
-   ═══════════════════════════════════════════════════ */
+/* scanline */
 body::before {
-  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9000;
-  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.015) 2px, rgba(0,0,0,0.015) 4px);
+  content:''; position:fixed; inset:0; pointer-events:none; z-index:9000;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.015) 2px,rgba(0,0,0,0.015) 4px);
 }
 
-/* ═══════════════════════════════════════════════════
-   BACKGROUND GLOWS
-   ═══════════════════════════════════════════════════ */
-.glow { position: fixed; border-radius: 50%; pointer-events: none; z-index: 0; }
-.g1 { width: 60vw; height: 60vw; max-width: 600px; max-height: 600px; background: radial-gradient(circle, rgba(201,168,76,0.07) 0%, transparent 70%); top: -10%; right: -10%; filter: blur(60px); }
-.g2 { width: 50vw; height: 50vw; max-width: 400px; max-height: 400px; background: radial-gradient(circle, rgba(201,168,76,0.05) 0%, transparent 70%); bottom: 0; left: -10%; filter: blur(50px); }
+/* glows */
+.glow { position:fixed; border-radius:50%; filter:blur(110px); pointer-events:none; z-index:0; }
+.g1 { width:600px; height:600px; background:radial-gradient(circle,rgba(201,168,76,0.06) 0%,transparent 70%); top:-200px; right:-150px; }
+.g2 { width:400px; height:400px; background:radial-gradient(circle,rgba(201,168,76,0.04) 0%,transparent 70%); bottom:5%; left:-100px; }
 
-/* ═══════════════════════════════════════════════════
-   NAVIGATION
-   ═══════════════════════════════════════════════════ */
+/* ── NAV ── */
 nav {
-  position: fixed; top: 0; left: 0; right: 0; height: var(--nav-h); z-index: 800;
-  background: rgba(8,11,16,0.85); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 1.25rem; padding-top: var(--safe-top);
+  position:fixed; top:0; left:0; right:0; height:var(--nav-h); z-index:800;
+  background:rgba(8,11,16,0.85); backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:space-between;
+  padding:0 1.5rem;
 }
-.nav-logo { display: flex; align-items: center; gap: 10px; }
+.nav-logo {
+  display:flex; align-items:center; gap:9px;
+  font-family:var(--mono); font-size:.82rem; color:var(--gold); letter-spacing:.04em;
+}
 .logo-mark {
-  width: 36px; height: 36px; border-radius: 10px;
-  background: linear-gradient(135deg, #C9A84C, #a08030);
-  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  width:28px; height:28px; background:var(--gold); border-radius:6px;
+  display:flex; align-items:center; justify-content:center; flex-shrink:0;
 }
-.logo-mark svg { width: 18px; height: 18px; color: var(--bg); }
-.logo-text {
-  font-family: var(--display); font-size: 0.85rem; font-weight: 800;
-  color: var(--gold); letter-spacing: 0.05em;
+.logo-mark svg { width:14px; height:14px; }
+.logo-cur {
+  display:inline-block; width:7px; height:13px; background:var(--gold);
+  border-radius:1px; margin-right:1px; vertical-align:middle;
+  animation:blink 1s step-end infinite;
 }
-.logo-sub { font-family: var(--mono); font-size: 0.55rem; color: var(--t2); letter-spacing: 0.15em; }
-.nav-cta {
-  display: flex; align-items: center; gap: 6px;
-  font-family: var(--display); font-size: 0.75rem; font-weight: 700; color: var(--gold);
-  padding: 0.5rem 1.1rem; border-radius: 10px;
-  background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.3);
-  cursor: pointer; transition: all 0.25s;
+@keyframes blink { 50%{opacity:0} }
+.nav-tag {
+  display:flex; align-items:center; gap:6px;
+  font-family:var(--mono); font-size:.67rem; letter-spacing:.1em;
+  color:var(--gold); padding:.3rem .85rem;
+  background:var(--gold-dim); border:1px solid rgba(201,168,76,0.2); border-radius:99px;
 }
-.nav-cta:hover { background: rgba(201,168,76,0.18); }
-.nav-cta svg { width: 14px; height: 14px; }
+.tag-dot {
+  width:6px; height:6px; background:var(--gold); border-radius:50%;
+  animation:pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{box-shadow:0 0 0 0 var(--gold-glow)} 50%{box-shadow:0 0 0 5px transparent} }
 
-/* ═══════════════════════════════════════════════════
-   HERO
-   ═══════════════════════════════════════════════════ */
+/* ── HERO ── */
 .hero {
-  position: relative; z-index: 1;
-  min-height: 100dvh; display: flex; align-items: center; justify-content: center;
-  padding: calc(var(--nav-h) + var(--safe-top) + 3rem) 1.25rem 3rem;
-  text-align: center; overflow: hidden;
+  position:relative; z-index:1;
+  min-height:100dvh; display:flex; align-items:center; justify-content:center;
+  padding:calc(var(--nav-h) + 3rem) 1.5rem 3rem;
+  text-align:center;
 }
-.hero-glow-1 {
-  position: absolute; top: 15%; right: 20%; width: 400px; height: 400px;
-  border-radius: 50%; pointer-events: none;
-  background: radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%);
-  filter: blur(60px); opacity: 0.6;
-}
-.hero-glow-2 {
-  position: absolute; top: 40%; left: 25%; width: 300px; height: 300px;
-  border-radius: 50%; pointer-events: none;
-  background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%);
-  filter: blur(50px); opacity: 0.4;
-}
-.hero-inner { max-width: 600px; margin: 0 auto; position: relative; z-index: 1; }
+.hero-inner { max-width:600px; margin:0 auto; }
 
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 0.45rem 1.2rem; border-radius: 99px;
-  background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.2);
-  margin-bottom: 1.8rem;
-  opacity: 0; animation: hero-fade 0.7s 0.3s forwards cubic-bezier(0.16,1,0.3,1);
+.badge {
+  display:inline-flex; align-items:center; gap:.5rem;
+  padding:.3rem .9rem; background:var(--gold-dim);
+  border:1px solid rgba(201,168,76,0.2); border-radius:99px;
+  font-family:var(--mono); font-size:.67rem; color:var(--gold); letter-spacing:.1em;
+  margin-bottom:1.8rem;
+  animation:fadeUp .7s .1s both;
 }
-.hero-badge svg { width: 14px; height: 14px; color: var(--gold); }
-.hero-badge span { font-size: 0.75rem; font-weight: 500; color: var(--gold); }
+.badge-dot { width:6px; height:6px; background:var(--gold); border-radius:50%; animation:pulse 2s ease-in-out infinite; }
 
 .hero-title {
-  font-family: var(--display); font-weight: 800;
-  font-size: clamp(2.6rem, 8vw, 5rem); line-height: 1.08; letter-spacing: -0.02em;
-  margin-bottom: 1rem; color: var(--t1);
-  opacity: 0; animation: hero-fade 0.7s 0.4s forwards cubic-bezier(0.16,1,0.3,1);
+  font-family:var(--display); font-weight:800;
+  font-size:clamp(3rem,10vw,5.5rem); line-height:.95; letter-spacing:-.03em;
+  margin-bottom:.8rem;
+  animation:fadeUp .7s .2s both;
+}
+.hero-title .solid { display:block; color:var(--t1); }
+.hero-title .hollow {
+  display:block; color:transparent;
+  -webkit-text-stroke:1.5px rgba(201,168,76,0.35);
 }
 
 .hero-sub {
-  font-size: clamp(0.9rem, 2.5vw, 1.05rem); color: var(--t2); line-height: 1.8;
-  max-width: 460px; margin: 0 auto 2.5rem;
-  opacity: 0; animation: hero-fade 0.7s 0.5s forwards cubic-bezier(0.16,1,0.3,1);
+  font-size:.97rem; color:var(--t2); line-height:1.82;
+  margin:1.2rem auto 2.5rem; max-width:400px;
+  padding-top:1rem; border-top:1px solid rgba(201,168,76,0.15);
+  animation:fadeUp .7s .3s both;
 }
 
+/* 3-stat bar */
 .hero-stats {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
-  opacity: 0; animation: hero-fade 0.7s 0.6s forwards cubic-bezier(0.16,1,0.3,1);
+  display:grid; grid-template-columns:repeat(3,1fr);
+  background:var(--card-bg); border:1px solid var(--border);
+  border-radius:var(--r); overflow:hidden; margin-bottom:2.5rem;
+  animation:fadeUp .7s .4s both;
 }
-.hstat {
-  padding: 1rem 0.5rem; border-radius: 14px; text-align: center;
-  background: var(--card); border: 1px solid var(--border);
+.hstat { padding:.9rem .5rem; text-align:center; border-left:1px solid var(--border); }
+.hstat:last-child { border-left:none; }
+.hstat-n {
+  display:block; font-family:var(--mono); font-size:1.4rem;
+  color:var(--gold); line-height:1; margin-bottom:.2rem;
 }
-.hstat-n { display: block; font-family: var(--display); font-size: clamp(1.1rem, 3vw, 1.5rem); font-weight: 800; line-height: 1; margin-bottom: 4px; }
-.hstat-l { font-size: 0.65rem; color: var(--t2); }
+.hstat-l { font-size:.67rem; color:var(--t2); text-transform:uppercase; letter-spacing:.08em; }
 
-@keyframes hero-fade { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+/* scroll hint */
+.scroll-hint {
+  display:flex; align-items:center; justify-content:center; gap:.5rem;
+  font-family:var(--mono); font-size:.63rem; letter-spacing:.12em;
+  color:var(--t3); text-transform:uppercase;
+  animation:fadeUp .7s .6s both;
+}
+.scroll-hint::before, .scroll-hint::after {
+  content:''; display:block; width:30px; height:1px; background:var(--t3);
+}
 
-/* ═══════════════════════════════════════════════════
-   SECTION BASE
-   ═══════════════════════════════════════════════════ */
-.section { position: relative; z-index: 1; padding: 2rem 1.25rem 5rem; }
-.section.alt { background: var(--bg2); }
-.wrap { max-width: 1100px; margin: 0 auto; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:none} }
 
-.sh { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.8rem; }
-.sh-code { font-family: var(--mono); font-size: 0.65rem; color: var(--gold); letter-spacing: 0.12em; opacity: 0.7; white-space: nowrap; }
-.sh-rule { flex: 1; height: 1px; background: linear-gradient(90deg, var(--border), transparent); }
-.sh-title { font-family: var(--display); font-size: clamp(1.5rem, 4vw, 2.2rem); font-weight: 800; letter-spacing: -0.02em; color: var(--t1); white-space: nowrap; }
-.sh-count { font-family: var(--mono); font-size: 0.7rem; color: var(--t2); margin-top: 4px; }
+/* ── SECTION BASE ── */
+.section { position:relative; z-index:1; padding:5rem 1.5rem; }
+.section.alt { background:var(--bg2); }
 
-/* ═══════════════════════════════════════════════════
-   STICKY SEARCH BAR
-   ═══════════════════════════════════════════════════ */
-.sticky-bar {
-  position: sticky; top: calc(var(--nav-h) + var(--safe-top)); z-index: 100;
-  background: rgba(15,18,25,0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  padding: 1.25rem 0 1rem; margin-bottom: 1.5rem;
-  border-bottom: 1px solid var(--border);
-  transition: box-shadow 0.3s;
-}
-.sticky-bar.scrolled { box-shadow: 0 4px 30px rgba(0,0,0,0.3); }
+.sh { display:flex; align-items:center; gap:1.2rem; margin-bottom:3.5rem; }
+.sh-code { font-family:var(--mono); font-size:.65rem; color:var(--gold); letter-spacing:.15em; white-space:nowrap; opacity:.8; }
+.sh-rule { flex:1; height:1px; background:linear-gradient(90deg,var(--border),transparent); }
+.sh-title { font-family:var(--display); font-size:clamp(1.6rem,4vw,2.4rem); font-weight:800; letter-spacing:-.03em; line-height:.95; white-space:nowrap; }
 
-.search-box {
-  position: relative; width: 100%; margin-bottom: 1rem;
-}
-.search-box input {
-  width: 100%; background: var(--card); border: 1.5px solid var(--border);
-  color: var(--t1); font-size: 0.92rem; padding: 0.85rem 3rem 0.85rem 1.2rem;
-  border-radius: 14px; transition: all 0.3s;
-}
-.search-box input::placeholder { color: var(--t2); }
-.search-box input:focus {
-  border-color: var(--border-hi);
-  background: rgba(201,168,76,0.03);
-  box-shadow: 0 0 0 4px var(--gold-glow), 0 0 30px rgba(201,168,76,0.06);
-}
-.search-box .search-icon {
-  position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
-  color: var(--t2); width: 18px; height: 18px; transition: all 0.3s; pointer-events: none;
-}
-.search-box input:focus ~ .search-icon { color: var(--gold); transform: translateY(-50%) scale(1.15); }
-.search-box .clear-btn {
-  position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
-  width: 26px; height: 26px; border-radius: 50%; border: none; cursor: pointer;
-  background: rgba(255,255,255,0.08); color: var(--t2);
-  display: none; align-items: center; justify-content: center; transition: all 0.2s;
-}
-.search-box .clear-btn.visible { display: flex; }
-.search-box .clear-btn:hover { background: rgba(255,255,255,0.14); }
-.search-box .clear-btn svg { width: 14px; height: 14px; }
+.wrap { max-width:1000px; margin:0 auto; }
 
-/* ═══════════════════════════════════════════════════
-   FILTER PILLS
-   ═══════════════════════════════════════════════════ */
-.filters-row {
-  display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px;
-  scrollbar-width: none; -ms-overflow-style: none;
+/* ── CATEGORY PILLS ── */
+.cats-scroll {
+  display:flex; gap:.55rem; overflow-x:auto;
+  padding-bottom:.5rem; scrollbar-width:none; margin-bottom:2.5rem;
 }
-.filters-row::-webkit-scrollbar { display: none; }
+.cats-scroll::-webkit-scrollbar { display:none; }
+.cat-pill {
+  display:inline-flex; align-items:center; gap:.45rem;
+  background:var(--card-bg); border:1.5px solid var(--border);
+  border-radius:6px; padding:.55rem 1.1rem;
+  font-family:var(--mono); font-size:.7rem; letter-spacing:.06em;
+  white-space:nowrap; cursor:pointer; flex-shrink:0;
+  transition:all .2s; color:var(--t2);
+}
+.cat-pill svg { width:.95rem; height:.95rem; }
+.cat-pill.active, .cat-pill:hover {
+  background:var(--gold-dim); color:var(--gold);
+  border-color:rgba(201,168,76,0.35);
+}
 
-.filter-pill {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: var(--card); border: 1.5px solid var(--border);
-  border-radius: 12px; padding: 0.55rem 1rem;
-  font-size: 0.75rem; font-weight: 500; white-space: nowrap;
-  cursor: pointer; flex-shrink: 0; transition: all 0.25s; color: var(--t2);
-  min-height: 44px;
+/* count */
+#countLabel {
+  font-family:var(--mono); font-size:.63rem; color:var(--t2);
+  letter-spacing:.1em; text-transform:uppercase;
 }
-.filter-pill svg { width: 15px; height: 15px; }
-.filter-pill.active, .filter-pill:hover {
-  background: var(--gold-dim); color: var(--gold);
-  border-color: rgba(201,168,76,0.4);
-}
-.filter-pill.active { font-weight: 700; }
-.filter-pill.discount { border-radius: 99px; padding: 0.45rem 0.9rem; font-size: 0.7rem; font-family: var(--mono); }
-.filter-pill.discount .flame-icon { display: none; }
-.filter-pill.discount.active .flame-icon { display: inline; }
 
-/* ═══════════════════════════════════════════════════
-   DEALS GRID
-   ═══════════════════════════════════════════════════ */
+/* ── DEALS GRID ── */
 .deals-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1.25rem;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+  gap:1.1rem;
 }
 
 .deal-card {
-  background: var(--card); border: 1px solid var(--border);
-  border-radius: var(--r-lg); overflow: hidden; cursor: pointer;
-  transition: all 0.35s cubic-bezier(0.16,1,0.3,1); position: relative;
-  display: flex; flex-direction: column;
+  background:var(--card-bg); border:1px solid var(--border);
+  border-radius:var(--r-lg); overflow:hidden; cursor:pointer;
+  transition:all .28s; position:relative;
 }
 .deal-card:hover {
-  border-color: var(--border-hi); transform: translateY(-6px);
-  box-shadow: 0 20px 50px rgba(0,0,0,0.4), 0 0 30px rgba(201,168,76,0.08);
+  border-color:var(--border-hi); transform:translateY(-5px);
+  box-shadow:0 24px 60px rgba(0,0,0,.5);
 }
-
-.deal-card .card-bg {
-  position: absolute; inset: 0; opacity: 0; transition: opacity 0.5s; pointer-events: none;
-}
-.deal-card:hover .card-bg { opacity: 1; }
 
 .deal-top {
-  height: 110px; display: flex; align-items: center; justify-content: center;
-  position: relative; overflow: hidden;
+  height:120px; display:flex; align-items:center; justify-content:center;
+  position:relative; overflow:hidden;
 }
 .deal-top svg {
-  width: 2.8rem; height: 2.8rem; color: var(--gold);
-  opacity: 0.85; filter: drop-shadow(0 4px 12px rgba(201,168,76,0.15));
-  transition: transform 0.4s;
+  width:3rem; height:3rem; color:var(--gold);
+  opacity:0.9;
 }
-.deal-card:hover .deal-top svg { transform: scale(1.12); }
-
 .deal-top::after {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(to bottom, transparent 40%, var(--card));
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(to bottom, transparent 40%, var(--card-bg));
 }
-
-.deal-badge-featured {
-  position: absolute; top: 10px; right: 10px; z-index: 2;
-  display: flex; align-items: center; gap: 4px;
-  padding: 3px 8px; border-radius: 8px;
-  background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.2);
-}
-.deal-badge-featured svg { width: 12px; height: 12px; color: var(--gold); }
-.deal-badge-featured span { font-size: 0.6rem; font-weight: 600; color: var(--gold); }
 
 .deal-discount {
-  position: absolute; top: 10px; left: 10px; z-index: 2;
-  font-family: var(--display); font-weight: 800; font-size: 1.15rem;
-  color: var(--gold); padding: 4px 12px;
-  background: rgba(201,168,76,0.08); border-radius: 10px;
-  letter-spacing: 0.02em;
+  position:absolute; top:12px; right:12px; z-index:2;
+  font-family:var(--mono); font-weight:700; font-size:.72rem;
+  letter-spacing:.06em; padding:.22rem .65rem;
+  background:var(--gold); color:#080b10;
+  border-radius:4px;
 }
-.deal-discount.hi { box-shadow: 0 0 20px rgba(201,168,76,0.15); }
+.deal-discount.hi { background:var(--gold); box-shadow:0 0 12px var(--gold-glow); }
 
-.deal-body { padding: 1.1rem 1.2rem 1.2rem; flex: 1; display: flex; flex-direction: column; position: relative; z-index: 1; }
+.deal-body { padding:1rem 1.1rem 1.1rem; }
 .deal-cat {
-  font-family: var(--mono); font-size: 0.6rem; color: var(--gold);
-  letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px;
-  display: flex; align-items: center; gap: 8px;
+  font-family:var(--mono); font-size:.6rem; color:var(--gold);
+  letter-spacing:.15em; text-transform:uppercase; margin-bottom:.3rem;
+  display:flex; align-items:center; gap:.4rem;
 }
-.deal-cat::before { content: ''; display: block; width: 14px; height: 1px; background: var(--gold); }
+.deal-cat::before { content:''; display:block; width:14px; height:1px; background:var(--gold); }
 .deal-name {
-  font-family: var(--display); font-weight: 800; font-size: 1.1rem;
-  color: var(--t1); line-height: 1.3; margin-bottom: 0.6rem;
+  font-family:var(--display); font-weight:700; font-size:1.1rem;
+  color:var(--t1); line-height:1.2; margin-bottom:.5rem;
 }
 .deal-loc {
-  font-size: 0.72rem; color: var(--t2);
-  display: flex; align-items: center; gap: 5px; margin-top: auto;
+  font-family:var(--mono); font-size:.68rem; color:var(--t2);
+  display:flex; align-items:center; gap:.35rem;
 }
-.deal-loc svg { color: var(--t2); width: 13px; height: 13px; }
-.deal-arrow {
-  display: flex; align-items: center; gap: 4px;
-  font-size: 0.72rem; color: var(--t2); transition: all 0.3s;
-}
-.deal-arrow svg { color: var(--gold); width: 14px; height: 14px; transition: transform 0.3s; }
-.deal-card:hover .deal-arrow svg { transform: translateX(-3px); }
+.deal-loc svg { color:var(--gold); width:.75rem; height:.75rem; opacity:0.8; }
 
-/* ═══════════════════════════════════════════════════
-   EMPTY STATE
-   ═══════════════════════════════════════════════════ */
-.empty-state {
-  grid-column: 1 / -1; text-align: center; padding: 4rem 1rem;
-}
-.empty-icon {
-  width: 64px; height: 64px; border-radius: 18px; margin: 0 auto 1.2rem;
-  background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.15);
-  display: flex; align-items: center; justify-content: center;
-}
-.empty-icon svg { width: 28px; height: 28px; color: var(--gold); opacity: 0.6; }
-.empty-state h4 { font-size: 1.1rem; font-weight: 700; color: var(--t1); margin-bottom: 0.5rem; }
-.empty-state p { font-size: 0.9rem; color: var(--t2); max-width: 340px; margin: 0 auto; }
-.empty-state button {
-  margin-top: 1.2rem; padding: 0.6rem 1.5rem; border-radius: 10px;
-  font-size: 0.82rem; font-weight: 600; color: var(--gold);
-  background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.3);
-  cursor: pointer; transition: all 0.25s;
-}
-.empty-state button:hover { background: rgba(201,168,76,0.18); }
-
-/* ═══════════════════════════════════════════════════
-   BOTTOM SHEET
-   ═══════════════════════════════════════════════════ */
+/* ── BOTTOM SHEET ── */
 .overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-  z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.35s;
+  position:fixed; inset:0; background:rgba(0,0,0,0.7);
+  backdrop-filter:blur(6px); z-index:200;
+  opacity:0; pointer-events:none; transition:opacity .25s;
 }
-.overlay.open { opacity: 1; pointer-events: all; }
+.overlay.open { opacity:1; pointer-events:all; }
 
 .sheet {
-  position: fixed; bottom: 0; left: 0; right: 0;
-  background: var(--card); border-top: 1px solid var(--border);
-  border-radius: 28px 28px 0 0; z-index: 1001;
-  padding: 1.2rem 1.5rem calc(1.5rem + var(--safe-bot));
-  max-height: 88dvh; overflow-y: auto;
-  transform: translateY(100%);
-  transition: transform 0.4s cubic-bezier(0.32,0.72,0,1);
+  position:fixed; bottom:0; left:0; right:0;
+  background:var(--card-bg); border-top:1px solid var(--border);
+  border-radius:24px 24px 0 0; z-index:201;
+  padding:1.5rem 1.4rem 3rem; max-height:88dvh; overflow-y:auto;
+  transform:translateY(100%);
+  transition:transform .32s cubic-bezier(0.32,0.72,0,1);
 }
-.overlay.open .sheet { transform: translateY(0); }
+.overlay.open .sheet { transform:translateY(0); }
 
+/* gold top accent */
 .sheet::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(90deg, transparent, var(--gold), transparent);
 }
-.sheet-handle { width: 44px; height: 5px; background: var(--raised); border-radius: 3px; margin: 0 auto 1.5rem; }
+
+.sheet-handle {
+  width:40px; height:4px; background:var(--raised);
+  border-radius:2px; margin:0 auto 1.5rem;
+}
+.sheet-icon { 
+  display:flex; align-items:center; justify-content:center;
+  width:64px; height:64px; border-radius:14px;
+  background:var(--gold-dim); border:1px solid rgba(201,168,76,0.15);
+  margin-bottom:1.2rem;
+}
+.sheet-icon svg { width:2.2rem; height:2.2rem; color:var(--gold); }
+
+.sheet-discount {
+  display:inline-flex; align-items:center; gap:.4rem;
+  background:var(--gold-dim); color:var(--gold);
+  font-family:var(--mono); font-weight:700; font-size:1rem;
+  letter-spacing:.06em; padding:.3rem .9rem;
+  border:1px solid rgba(201,168,76,0.25); border-radius:6px; margin-bottom:.8rem;
+}
+.sheet-discount svg { width:.9rem; height:.9rem; }
+
+.sheet-name {
+  font-family:var(--display); font-weight:800;
+  font-size:1.6rem; color:var(--t1); line-height:1.15; margin-bottom:.3rem;
+}
+.sheet-cat {
+  font-family:var(--mono); font-size:.65rem; color:var(--gold);
+  letter-spacing:.15em; text-transform:uppercase; margin-bottom:1rem;
+}
+.sheet-desc { font-size:.9rem; color:var(--t2); line-height:1.75; margin-bottom:1.5rem; }
+
+.sheet-meta { background:var(--bg2); border:1px solid var(--border); border-radius:12px; overflow:hidden; margin-bottom:1.5rem; }
+.sheet-row {
+  display:flex; align-items:center; gap:.9rem;
+  padding:.9rem 1rem; border-bottom:1px solid var(--border);
+  font-size:.84rem;
+}
+.sheet-row:last-child { border-bottom:none; }
+.sheet-row svg { width:1.1rem; height:1.1rem; color:var(--gold); flex-shrink:0; }
+.sheet-row-label { font-family:var(--mono); font-size:.65rem; color:var(--t2); letter-spacing:.08em; min-width:65px; flex-shrink:0; }
+.sheet-row-val { color:var(--t1); font-size:.88rem; }
+
+.sheet-btn {
+  display:flex; align-items:center; justify-content:center; gap:.6rem;
+  width:100%; background:var(--gold); color:#080b10;
+  font-family:var(--mono); font-weight:700; font-size:.85rem; letter-spacing:.08em;
+  text-transform:uppercase; border:none; border-radius:var(--r);
+  padding:1.1rem; cursor:pointer; transition:all .22s;
+}
+.sheet-btn:hover { background:#e8c96e; box-shadow:0 10px 28px var(--gold-glow); }
+.sheet-btn svg { width:1.2rem; height:1.2rem; }
+
 .sheet-close {
-  position: absolute; top: 1.2rem; left: 1.2rem; z-index: 2;
-  width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border);
-  background: var(--raised); color: var(--t2); cursor: pointer;
-  display: flex; align-items: center; justify-content: center; transition: all 0.2s;
+  position:absolute; top:1.2rem; left:1.4rem;
+  background:var(--raised); border:1px solid var(--border);
+  color:var(--t2); width:34px; height:34px; border-radius:var(--r);
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:all .2s;
 }
-.sheet-close:hover { color: var(--gold); border-color: var(--border-hi); }
-.sheet-close svg { width: 18px; height: 18px; }
+.sheet-close svg { width:1.1rem; height:1.1rem; }
+.sheet-close:hover { color:var(--gold); border-color:var(--border-hi); }
 
-.sheet-head { display: flex; gap: 1rem; align-items: flex-start; margin-bottom: 1.5rem; }
-.sheet-icon {
-  width: 64px; height: 64px; border-radius: 16px; flex-shrink: 0;
-  background: var(--gold-dim); border: 1px solid rgba(201,168,76,0.2);
-  display: flex; align-items: center; justify-content: center;
-}
-.sheet-icon svg { width: 28px; height: 28px; color: var(--gold); }
-.sheet-info { flex: 1; }
-.sheet-disc {
-  display: inline-flex; align-items: center; gap: 5px;
-  background: var(--gold-dim); color: var(--gold);
-  font-family: var(--display); font-weight: 800; font-size: 1.4rem;
-  padding: 4px 12px; border-radius: 10px; margin-bottom: 6px;
-}
-.sheet-disc svg { width: 16px; height: 16px; }
-.sheet-name { font-family: var(--display); font-weight: 800; font-size: 1.35rem; color: var(--t1); line-height: 1.2; margin-bottom: 2px; }
-.sheet-cat { font-family: var(--mono); font-size: 0.6rem; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; }
-.sheet-desc { font-size: 0.92rem; color: var(--t2); line-height: 1.75; margin-bottom: 1.5rem; }
+/* fi animation */
+.fi { opacity:0; transform:translateY(20px); transition:opacity .6s, transform .6s; }
+.fi.in { opacity:1; transform:none; }
 
-.sheet-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 1.5rem; }
-.sheet-card-item {
-  padding: 0.85rem 0.5rem; border-radius: 14px; text-align: center;
-  background: rgba(255,255,255,0.02); border: 1px solid var(--border);
-}
-.sheet-card-item svg { width: 18px; height: 18px; color: var(--gold); margin-bottom: 6px; }
-.sheet-card-item .val { font-size: 0.7rem; font-weight: 600; color: var(--t1); margin-bottom: 2px; }
-.sheet-card-item .lbl { font-size: 0.6rem; color: var(--t2); }
+/* page end */
+.page-end { height:2rem; }
 
-.sheet-detail-box {
-  padding: 1rem; border-radius: 14px; margin-bottom: 1.2rem;
-  background: rgba(255,255,255,0.02); border: 1px solid var(--border);
-}
-.sheet-detail-box h5 { font-size: 0.85rem; font-weight: 700; color: var(--t1); margin-bottom: 6px; }
-.sheet-detail-box p { font-size: 0.85rem; color: var(--t2); line-height: 1.75; }
-
-.sheet-featured {
-  display: flex; align-items: center; gap: 8px;
-  padding: 0.8rem 1rem; border-radius: 14px; margin-bottom: 1.2rem;
-  background: rgba(201,168,76,0.06); border: 1px solid rgba(201,168,76,0.15);
-}
-.sheet-featured svg { width: 16px; height: 16px; color: var(--gold); }
-.sheet-featured span { font-size: 0.75rem; font-weight: 600; color: var(--gold); }
-
-.sheet-cta {
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  width: 100%; padding: 1rem; border: none; border-radius: 14px;
-  background: linear-gradient(135deg, #C9A84C, #a08030);
-  color: var(--bg); font-size: 0.95rem; font-weight: 700;
-  cursor: pointer; transition: all 0.25s;
-}
-.sheet-cta:hover { box-shadow: 0 10px 30px var(--gold-glow); background: linear-gradient(135deg, #d4b55e, #b08e38); }
-.sheet-cta:active { transform: scale(0.98); }
-.sheet-cta svg { width: 20px; height: 20px; }
-
-/* ═══════════════════════════════════════════════════
-   STICKY SEARCH (FLOATING ON SCROLL)
-   ═══════════════════════════════════════════════════ */
-.floating-search {
-  position: fixed; top: calc(var(--nav-h) + var(--safe-top)); left: 0; right: 0; z-index: 700;
-  background: rgba(8,11,16,0.92); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-  padding: 0.7rem 1.25rem;
-  transform: translateY(-100%); opacity: 0;
-  transition: all 0.35s cubic-bezier(0.32,0.72,0,1);
-  pointer-events: none;
-}
-.floating-search.visible { transform: translateY(0); opacity: 1; pointer-events: all; }
-
-/* ═══════════════════════════════════════════════════
-   FADE-IN ANIMATION
-   ═══════════════════════════════════════════════════ */
-.fi { opacity: 0; transform: translateY(20px); transition: opacity 0.6s, transform 0.6s; }
-.fi.in { opacity: 1; transform: none; }
-
-/* ═══════════════════════════════════════════════════
-   FOOTER
-   ═══════════════════════════════════════════════════ */
-.footer {
-  position: relative; z-index: 1;
-  padding: 2rem 1.25rem; text-align: center;
-  border-top: 1px solid var(--border);
-}
-.footer p { font-size: 0.72rem; color: var(--t2); }
-
-/* ═══════════════════════════════════════════════════
-   RESPONSIVE
-   ═══════════════════════════════════════════════════ */
-@media (max-width: 768px) {
-  .hero-stats { grid-template-columns: repeat(2, 1fr); }
-  .sh { flex-direction: column; align-items: flex-start; gap: 6px; }
-  .sh-rule { display: none; }
-  .deals-grid { grid-template-columns: 1fr; }
-  .sheet-cards { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-  .nav-cta span { display: none; }
-  .nav-cta { padding: 0.5rem 0.8rem; }
-}
-
-@media (max-width: 400px) {
-  .filter-pill { padding: 0.45rem 0.8rem; font-size: 0.7rem; min-height: 40px; }
-  .deals-grid { grid-template-columns: 1fr; gap: 1rem; }
+/* ── RESPONSIVE ── */
+@media(max-width:600px) {
+  .sh { flex-direction:column; align-items:flex-start; gap:.4rem; margin-bottom:2rem; }
+  .sh-rule { display:none; }
+  .sh-title { white-space:normal; font-size:1.6rem; }
+  .deals-grid { grid-template-columns:1fr; }
 }
 </style>
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════
-     LOADING SCREEN
-     ═══════════════════════════════════════════════════ -->
-<div id="loader">
-  <div class="loader-glow"></div>
-  <div class="loader-icon">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
-    <div class="loader-ring"></div>
-  </div>
-  <div class="loader-letters" id="loaderLetters">
-    <span>T</span><span>H</span><span>E</span><span>.</span><span>E</span><span>L</span><span>I</span><span>T</span><span>E</span>
-  </div>
-  <div class="loader-bar-track">
-    <div class="loader-bar-fill" id="loaderBar"></div>
-    <div class="loader-bar-glow" id="loaderGlow"></div>
-  </div>
-  <div class="loader-tagline">Exclusive Privileges</div>
-</div>
-
-<!-- ═══════════════════════════════════════════════════
-     BACKGROUND GLOWS
-     ═══════════════════════════════════════════════════ -->
 <div class="glow g1"></div>
 <div class="glow g2"></div>
 
-<!-- ═══════════════════════════════════════════════════
-     NAVIGATION
-     ═══════════════════════════════════════════════════ -->
+<!-- NAV -->
 <nav>
   <div class="nav-logo">
     <div class="logo-mark">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+      <svg viewBox="0 0 14 14" fill="none">
+        <path d="M3 2l1.5 10L7 13l2.5-1L11 2M5 6h4" stroke="#080b10" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
     </div>
-    <div>
-      <div class="logo-text">THE.ELITE</div>
-      <div class="logo-sub">CARD</div>
-    </div>
+    The Elite Card<span class="logo-cur"></span>
   </div>
-  <button class="nav-cta" onclick="document.getElementById('dealsSection').scrollIntoView({behavior:'smooth'})">
-    <i data-lucide="arrow-down-left"></i>
-    <span>العروض</span>
-  </button>
+  <div class="nav-tag">
+    <span class="tag-dot"></span>
+    بطاقتك فعّالة
+  </div>
 </nav>
 
-<!-- ═══════════════════════════════════════════════════
-     HERO
-     ═══════════════════════════════════════════════════ -->
-<section class="hero">
-  <div class="hero-glow-1"></div>
-  <div class="hero-glow-2"></div>
+<!-- HERO -->
+<div class="hero">
   <div class="hero-inner">
-    <div class="hero-badge"><i data-lucide="star"></i> <span>عضوية حصرية مميزة</span></div>
-    <h1 class="hero-title">بطاقة <span class="text-gold">إيليت</span></h1>
-    <p class="hero-sub">خصومات حصرية تصل إلى 50% على أفضل المطاعم والفنادق والمراكز الصحية والمزيد</p>
+    <div class="badge"><span class="badge-dot"></span> خصومات حصرية لحاملي البطاقة</div>
+    <h1 class="hero-title">
+      <span class="solid">كل الخصومات</span>
+      <span class="hollow">في مكان واحد</span>
+    </h1>
+    <p class="hero-sub">تصفح الجهات الشريكة واستمتع بامتيازاتك فوراً في أفضل الأماكن</p>
     <div class="hero-stats">
-      <div class="hstat"><span class="hstat-n text-gold">50+</span><div class="hstat-l">شريك</div></div>
-      <div class="hstat"><span class="hstat-n text-gold">50%</span><div class="hstat-l">خصم كحد أقصى</div></div>
-      <div class="hstat"><span class="hstat-n text-gold">8</span><div class="hstat-l">فئات</div></div>
-      <div class="hstat"><span class="hstat-n text-gold">365</span><div class="hstat-l">يوم</div></div>
+      <div class="hstat"><span class="hstat-n">120+</span><div class="hstat-l">شريك</div></div>
+      <div class="hstat"><span class="hstat-n">50%</span><div class="hstat-l">أعلى خصم</div></div>
+      <div class="hstat"><span class="hstat-n">8</span><div class="hstat-l">فئات</div></div>
     </div>
+    <div class="scroll-hint">تصفح الخصومات</div>
   </div>
-</section>
+</div>
 
-<!-- ═══════════════════════════════════════════════════
-     DEALS SECTION
-     ═══════════════════════════════════════════════════ -->
+<!-- DEALS SECTION -->
 <div class="section alt" id="dealsSection">
   <div class="wrap">
 
     <div class="sh fi">
-      <span class="sh-code">01 — OFFERS</span>
+      <span class="sh-code">01 — Offers</span>
       <div class="sh-rule"></div>
-      <div>
-        <h2 class="sh-title">العروض المتاحة</h2>
-        <div class="sh-count" id="countLabel"></div>
-      </div>
+      <h2 class="sh-title">الخصومات</h2>
     </div>
 
-    <!-- SEARCH + FILTERS (Sticky) -->
-    <div class="sticky-bar fi" id="stickyBar" style="transition-delay:0.1s">
-      <div class="search-box">
-        <input type="text" id="searchInput" placeholder="ابحث عن عروض، مطاعم، أماكن...">
-        <i data-lucide="search" class="search-icon"></i>
-        <button class="clear-btn" id="clearBtn" onclick="clearSearch()">
-          <i data-lucide="x"></i>
-        </button>
-      </div>
-
-      <div class="filters-row" id="catRow">
-        <button class="filter-pill active" data-cat="all"><i data-lucide="layout-grid"></i> الكل</button>
-        <button class="filter-pill" data-cat="food"><i data-lucide="utensils"></i> مطاعم</button>
-        <button class="filter-pill" data-cat="health"><i data-lucide="activity"></i> صحة</button>
-        <button class="filter-pill" data-cat="beauty"><i data-lucide="sparkles"></i> سبا وجمال</button>
-        <button class="filter-pill" data-cat="sport"><i data-lucide="dumbbell"></i> رياضة</button>
-        <button class="filter-pill" data-cat="hotel"><i data-lucide="building-2"></i> فنادق</button>
-        <button class="filter-pill" data-cat="shop"><i data-lucide="shopping-bag"></i> تسوق</button>
-        <button class="filter-pill" data-cat="edu"><i data-lucide="book-open"></i> تعليم</button>
-      </div>
-
-      <div class="filters-row" id="discRow">
-        <button class="filter-pill discount active" data-disc="0"><i data-lucide="flame" class="flame-icon"></i> كل الخصومات</button>
-        <button class="filter-pill discount" data-disc="50"><i data-lucide="flame" class="flame-icon"></i> خصم 50% فأكثر</button>
-        <button class="filter-pill discount" data-disc="30"><i data-lucide="flame" class="flame-icon"></i> خصم 30% فأكثر</button>
-        <button class="filter-pill discount" data-disc="20"><i data-lucide="flame" class="flame-icon"></i> خصم 20% فأكثر</button>
-        <button class="filter-pill discount" data-disc="10"><i data-lucide="flame" class="flame-icon"></i> خصم 10% فأكثر</button>
-      </div>
+    <!-- Cats (أيقونات بديلة لأبل) -->
+    <div class="cats-scroll fi" style="transition-delay:.05s">
+      <div class="cat-pill active" onclick="filter('all',this)"><i data-lucide="layout-grid"></i> الكل</div>
+      <div class="cat-pill" onclick="filter('food',this)"><i data-lucide="utensils"></i> مطاعم</div>
+      <div class="cat-pill" onclick="filter('health',this)"><i data-lucide="activity"></i> صحة</div>
+      <div class="cat-pill" onclick="filter('beauty',this)"><i data-lucide="sparkles"></i> سبا وجمال</div>
+      <div class="cat-pill" onclick="filter('sport',this)"><i data-lucide="dumbbell"></i> رياضة</div>
+      <div class="cat-pill" onclick="filter('hotel',this)"><i data-lucide="building-2"></i> فنادق</div>
+      <div class="cat-pill" onclick="filter('shop',this)"><i data-lucide="shopping-bag"></i> تسوق</div>
+      <div class="cat-pill" onclick="filter('edu',this)"><i data-lucide="book-open"></i> تعليم</div>
     </div>
 
-    <!-- GRID -->
-    <div class="deals-grid fi" id="dealsGrid" style="transition-delay:0.2s"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem;" class="fi" style="transition-delay:.08s">
+      <span id="countLabel">9 عروض متاحة</span>
+    </div>
+
+    <div class="deals-grid fi" id="dealsGrid" style="transition-delay:.1s"></div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════
-     FOOTER
-     ═══════════════════════════════════════════════════ -->
-<div class="footer">
-  <p>© 2025 The Elite Card — جميع الحقوق محفوظة</p>
-</div>
+<div class="page-end"></div>
 
-<!-- ═══════════════════════════════════════════════════
-     BOTTOM SHEET
-     ═══════════════════════════════════════════════════ -->
+<!-- OVERLAY + SHEET -->
 <div class="overlay" id="overlay" onclick="closeSheet(event)">
   <div class="sheet" id="sheet">
     <button class="sheet-close" onclick="closeSheet()"><i data-lucide="x"></i></button>
     <div class="sheet-handle"></div>
-
-    <div class="sheet-head">
-      <div class="sheet-icon" id="sIcon"></div>
-      <div class="sheet-info">
-        <div class="sheet-disc" id="sDisc"></div>
-        <div class="sheet-name" id="sName"></div>
-        <div class="sheet-cat" id="sCat"></div>
-      </div>
-    </div>
-
+    <div class="sheet-icon" id="sIcon"></div>
+    <div class="sheet-discount" id="sDiscount"></div>
+    <div class="sheet-name" id="sName"></div>
+    <div class="sheet-cat" id="sCat"></div>
     <div class="sheet-desc" id="sDesc"></div>
-
-    <div class="sheet-cards">
-      <div class="sheet-card-item"><i data-lucide="map-pin"></i><div class="val" id="sLoc"></div><div class="lbl">الموقع</div></div>
-      <div class="sheet-card-item"><i data-lucide="clock"></i><div class="val" id="sHours"></div><div class="lbl">الساعات</div></div>
-      <div class="sheet-card-item"><i data-lucide="phone"></i><div class="val" id="sPhone"></div><div class="lbl">الهاتف</div></div>
+    <div class="sheet-meta">
+      <div class="sheet-row"><i data-lucide="map-pin"></i><span class="sheet-row-label">الموقع</span><span class="sheet-row-val" id="sLoc"></span></div>
+      <div class="sheet-row"><i data-lucide="clock"></i><span class="sheet-row-label">المواعيد</span><span class="sheet-row-val" id="sHours"></span></div>
+      <div class="sheet-row"><i data-lucide="phone"></i><span class="sheet-row-label">التليفون</span><span class="sheet-row-val" id="sPhone"></span></div>
     </div>
-
-    <div class="sheet-detail-box">
-      <h5>تفاصيل العرض</h5>
-      <p id="sDescFull"></p>
-    </div>
-
-    <div class="sheet-featured" id="sFeatured" style="display:none">
-      <i data-lucide="flame"></i>
-      <span>عرض مميز — خصم حصري لأعضاء إيليت</span>
-    </div>
-
-    <button class="sheet-cta"><i data-lucide="qr-code"></i> اعرض البطاقة للخصم</button>
+    <button class="sheet-btn"><i data-lucide="ticket"></i> &nbsp; استخدم الخصم الآن</button>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════
-     FLOATING SEARCH (ON SCROLL)
-     ═══════════════════════════════════════════════════ -->
-<div class="floating-search" id="floatingSearch">
-  <div class="search-box">
-    <input type="text" id="floatingSearchInput" placeholder="ابحث في العروض...">
-    <i data-lucide="search" class="search-icon"></i>
-    <button class="clear-btn" id="floatingClearBtn" onclick="clearSearch()">
-      <i data-lucide="x"></i>
-    </button>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════════════
-     JAVASCRIPT
-     ═══════════════════════════════════════════════════ -->
 <script>
-/* ─── DATA ──────────────────────────────────────── */
+// إعداد قيم الأيقونات الجديدة بدلاً من الإيموجي
 const deals = [
-  { id:1, cat:'food',   icon:'utensils',      name:'Leonardo Bistro',       label:'مطاعم',        discount:'30%', val:30, hi:false, loc:'وسط البلد',    hours:'١٢ ظ — ١٢ م',  phone:'0100 123 4567', desc:'مطعم إيطالي راقٍ يقدم تجربة طعام أصيلة. الخصم ساري على قائمة الطعام والمشروبات ما عدا العروض الخاصة ومواسم الأعياد.', bg:'rgba(201,100,50,0.08)' },
-  { id:2, cat:'health', icon:'activity',      name:'Smile Dental Center',   label:'طب الأسنان',   discount:'25%', val:25, hi:false, loc:'المهندسين',    hours:'١٠ ص — ٩ م',   phone:'0100 987 6543', desc:'مركز أسنان متكامل مجهز بأحدث التقنيات. يشمل الخصم جلسات التنظيف، التجميل، التقويم، والزراعة.', bg:'rgba(50,180,120,0.06)' },
-  { id:3, cat:'beauty', icon:'sparkles',      name:'Aura Luxury Spa',       label:'سبا وجمال',    discount:'40%', val:40, hi:true,  loc:'التحرير',      hours:'١٠ ص — ١١ م',  phone:'0111 234 5678', desc:'ملاذك للاسترخاء والعناية بالبشرة. الخصم ساري على جميع باقات المساج، الحمام المغربي، وعلاجات البشرة.', bg:'rgba(180,80,200,0.06)' },
-  { id:4, cat:'sport',  icon:'dumbbell',      name:'Peak Performance Gym',  label:'رياضة',         discount:'50%', val:50, hi:true,  loc:'مدينة نصر',    hours:'٦ ص — ١٢ م',   phone:'0123 456 7890', desc:'صالة رياضية بمعايير عالمية. استمتع بخصم النصف على الاشتراكات الشهرية والسنوية وحصص اللياقة الجماعية.', bg:'rgba(50,80,200,0.06)' },
-  { id:5, cat:'hotel',  icon:'building-2',    name:'Grand Nile Palace',     label:'فنادق',         discount:'20%', val:20, hi:false, loc:'كورنيش النيل', hours:'٢٤ ساعة',      phone:'022 233 4455',  desc:'إقامة فاخرة بإطلالة بانورامية على النيل. الخصم متاح للحجوزات المباشرة للغرف والأجنحة الفندقية.', bg:'rgba(201,168,76,0.06)' },
-  { id:6, cat:'food',   icon:'coffee',        name:'Arabica Roasters',      label:'مقاهي',         discount:'15%', val:15, hi:false, loc:'الزمالك',      hours:'٨ ص — ١١ م',   phone:'0155 678 9012', desc:'وجهة عشاق القهوة المختصة. الخصم يشمل كافة أنواع المشروبات الساخنة والباردة والمخبوزات الطازجة.', bg:'rgba(180,120,50,0.07)' },
-  { id:7, cat:'shop',   icon:'shopping-bag',  name:'Mode Gallery',          label:'تسوق وأزياء',  discount:'35%', val:35, hi:true,  loc:'سيتي ستارز',  hours:'١٠ ص — ١٢ م',  phone:'0100 111 2233', desc:'أحدث صيحات الموضة العالمية والمحلية. الخصم متاح على التشكيلة الكاملة (لا يسري وقت التنزيلات الموسمية).', bg:'rgba(200,50,100,0.06)' },
-  { id:8, cat:'edu',    icon:'book-open',     name:'LearnPro Academy',      label:'تعليم وتدريب', discount:'20%', val:20, hi:false, loc:'المعادي',      hours:'٩ ص — ٩ م',    phone:'0112 345 6789', desc:'طوّر مهاراتك مع نخبة من الخبراء. الخصم متاح لجميع الدورات التدريبية الحضورية وعبر الإنترنت.', bg:'rgba(50,150,200,0.06)' },
-  { id:9, cat:'health', icon:'hospital',      name:'Nova Medical Center',   label:'مستشفيات',      discount:'15%', val:15, hi:false, loc:'مصر الجديدة', hours:'٨ ص — ١٠ م',   phone:'0222 001 1223', desc:'رعاية صحية متكاملة. الخصم يغطي كشوفات العيادات الخارجية، الفحوصات المعملية، والأشعة.', bg:'rgba(50,200,120,0.06)' },
+  { cat:'food',   icon:'utensils',      name:'Leonardo Bistro',       label:'مطاعم',        discount:'30%', hi:false, loc:'وسط البلد',    hours:'١٢ ظ — ١٢ م',  phone:'0100 123 4567', desc:'مطعم إيطالي راقٍ — الخصم على الطعام والمشروبات ما عدا العروض الخاصة.', bg:'rgba(201,100,50,0.08)' },
+  { cat:'health', icon:'activity',      name:'Smile Dental Center',   label:'طب الأسنان',   discount:'25%', hi:false, loc:'المهندسين',    hours:'١٠ ص — ٩ م',   phone:'0100 987 6543', desc:'مركز أسنان متكامل — تنظيف، تجميل، تقويم، وزراعة.', bg:'rgba(50,180,120,0.06)' },
+  { cat:'beauty', icon:'sparkles',      name:'Aura Luxury Spa',       label:'سبا وجمال',    discount:'40%', hi:true,  loc:'التحرير',      hours:'١٠ ص — ١١ م',  phone:'0111 234 5678', desc:'سبا فاخر — مساج، عناية بالبشرة، وجلسات استرخاء. الخصم على جميع الباقات.', bg:'rgba(180,80,200,0.06)' },
+  { cat:'sport',  icon:'dumbbell',      name:'Peak Performance Gym',  label:'رياضة',         discount:'50%', hi:true,  loc:'مدينة نصر',    hours:'٦ ص — ١٢ م',   phone:'0123 456 7890', desc:'صالة رياضية عالمية — الخصم على الاشتراك الشهري والسنوي وجميع الفصول.', bg:'rgba(50,80,200,0.06)' },
+  { cat:'hotel',  icon:'building-2',    name:'Grand Nile Palace',     label:'فنادق',         discount:'20%', hi:false, loc:'كورنيش النيل', hours:'٢٤ ساعة',      phone:'022 233 4455',  desc:'فندق ٥ نجوم مطل على النيل — الخصم على الغرف والأجنحة.', bg:'rgba(201,168,76,0.06)' },
+  { cat:'food',   icon:'coffee',        name:'Arabica Roasters',      label:'مقاهي',         discount:'15%', hi:false, loc:'الزمالك',      hours:'٨ ص — ١١ م',   phone:'0155 678 9012', desc:'مقهى قهوة مختصة — الخصم على جميع المشروبات والمعجنات الطازجة.', bg:'rgba(180,120,50,0.07)' },
+  { cat:'shop',   icon:'shopping-bag',  name:'Mode Gallery',          label:'تسوق وأزياء',  discount:'35%', hi:true,  loc:'سيتي ستارز',  hours:'١٠ ص — ١٢ م',  phone:'0100 111 2233', desc:'أزياء عالمية ومحلية — الخصم على الكولكشن الكامل ما عدا العروض.', bg:'rgba(200,50,100,0.06)' },
+  { cat:'edu',    icon:'book-open',     name:'LearnPro Academy',      label:'تعليم وتدريب', discount:'20%', hi:false, loc:'المعادي',      hours:'٩ ص — ٩ م',    phone:'0112 345 6789', desc:'أكاديمية تدريبية — الخصم على جميع الكورسات الحضورية والأونلاين.', bg:'rgba(50,150,200,0.06)' },
+  { cat:'health', icon:'hospital',      name:'Nova Medical Center',   label:'مستشفيات',      discount:'15%', hi:false, loc:'مصر الجديدة', hours:'٨ ص — ١٠ م',   phone:'0222 001 1223', desc:'مركز طبي متكامل — الخصم على الكشف والأشعة والتحاليل.', bg:'rgba(50,200,120,0.06)' },
 ];
 
-/* ─── STATE ─────────────────────────────────────── */
-let currentCat = 'all';
-let currentDisc = 0;
-let searchQuery = '';
-let debounceTimer = null;
-
-/* ─── LOADING SCREEN ───────────────────────────── */
-(function initLoader() {
-  const bar = document.getElementById('loaderBar');
-  const glow = document.getElementById('loaderGlow');
-  const letters = document.querySelectorAll('#loaderLetters span');
-  const loader = document.getElementById('loader');
-  const startTime = Date.now();
-  const duration = 2000;
-
-  const progressTick = setInterval(() => {
-    const elapsed = Date.now() - startTime;
-    const pct = Math.min((elapsed / duration) * 100, 100);
-    bar.style.width = pct + '%';
-    glow.style.width = pct + '%';
-    if (pct >= 100) clearInterval(progressTick);
-  }, 16);
-
-  const letterTick = setInterval(() => {
-    const elapsed = Date.now() - startTime;
-    const idx = Math.floor((elapsed - 600) / 80);
-    letters.forEach((l, i) => { if (i <= idx) l.classList.add('show'); });
-    if (idx >= letters.length) clearInterval(letterTick);
-  }, 16);
-
-  setTimeout(() => loader.classList.add('hidden'), duration);
-  setTimeout(() => { loader.style.display = 'none'; init(); }, duration + 600);
-})();
-
-/* ─── INIT ─────────────────────────────────────── */
-function init() {
-  // Category pills
-  document.querySelectorAll('[data-cat]').forEach(el => {
-    el.addEventListener('click', () => {
-      document.querySelectorAll('[data-cat]').forEach(p => p.classList.remove('active'));
-      el.classList.add('active');
-      currentCat = el.dataset.cat;
-      applyFilters();
-    });
-  });
-
-  // Discount pills
-  document.querySelectorAll('[data-disc]').forEach(el => {
-    el.addEventListener('click', () => {
-      document.querySelectorAll('[data-disc]').forEach(p => p.classList.remove('active'));
-      el.classList.add('active');
-      currentDisc = parseInt(el.dataset.disc);
-      applyFilters();
-    });
-  });
-
-  // Search inputs (main + floating)
-  const searchInput = document.getElementById('searchInput');
-  const floatingInput = document.getElementById('floatingSearchInput');
-  const clearBtn = document.getElementById('clearBtn');
-  const floatingClearBtn = document.getElementById('floatingClearBtn');
-
-  function onSearchInput(e) {
-    searchQuery = e.target.value.toLowerCase().trim();
-    // Sync both inputs
-    if (e.target !== searchInput) searchInput.value = e.target.value;
-    if (e.target !== floatingInput) floatingInput.value = e.target.value;
-    // Update clear buttons
-    const hasVal = searchQuery.length > 0;
-    clearBtn.classList.toggle('visible', hasVal);
-    floatingClearBtn.classList.toggle('visible', hasVal);
-    // Debounce
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(applyFilters, 200);
-  }
-
-  searchInput.addEventListener('input', onSearchInput);
-  floatingInput.addEventListener('input', onSearchInput);
-
-  // Scroll observer for floating search
-  const stickyBar = document.getElementById('stickyBar');
-  const floatingSearch = document.getElementById('floatingSearch');
-  const observer = new IntersectionObserver(
-    ([entry]) => {
-      floatingSearch.classList.toggle('visible', !entry.isIntersecting);
-    },
-    { threshold: 0, rootMargin: '-80px 0px 0px 0px' }
-  );
-  observer.observe(stickyBar);
-
-  // Fade-in elements
-  document.querySelectorAll('.fi').forEach(el => {
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(x => { if (x.isIntersecting) { x.target.classList.add('in'); io.unobserve(x.target); } });
-    }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
-    io.observe(el);
-  });
-
-  // Init icons & render
-  lucide.createIcons({ attrs: { strokeWidth: 1.5 } });
-  applyFilters();
-}
-
-/* ─── FILTER ───────────────────────────────────── */
-function applyFilters() {
-  let filtered = deals;
-
-  if (currentCat !== 'all') filtered = filtered.filter(d => d.cat === currentCat);
-  if (currentDisc > 0) filtered = filtered.filter(d => d.val >= currentDisc);
-  if (searchQuery) {
-    filtered = filtered.filter(d =>
-      d.name.toLowerCase().includes(searchQuery) ||
-      d.label.includes(searchQuery) ||
-      d.loc.includes(searchQuery) ||
-      d.desc.includes(searchQuery)
-    );
-  }
-
-  renderDeals(filtered);
-}
-
-/* ─── RENDER ───────────────────────────────────── */
-function renderDeals(list) {
-  const grid = document.getElementById('dealsGrid');
-  const countLabel = document.getElementById('countLabel');
-
-  countLabel.innerHTML = `<span style="color:var(--gold);font-weight:700">${list.length}</span> عرض متاح`;
-
-  if (list.length === 0) {
-    grid.innerHTML = `
-      <div class="empty-state">
-        <div class="empty-icon"><i data-lucide="search-x"></i></div>
-        <h4>لا توجد نتائج</h4>
-        <p>جرب تغيير معايير البحث أو اختيار فئة أخرى للعثور على عروض أكثر</p>
-        <button onclick="resetFilters()">إعادة تعيين الفلاتر</button>
-      </div>`;
-  } else {
-    grid.innerHTML = list.map((d, i) => `
-      <div class="deal-card" onclick="openSheet(${d.id})" style="animation:cardIn 0.4s ${i * 0.05}s both">
-        <div class="card-bg" style="background:${d.bg}"></div>
-        <div class="deal-top" style="background:${d.bg}">
-          <i data-lucide="${d.icon}"></i>
-          <div class="deal-discount${d.hi ? ' hi' : ''}">${d.discount}</div>
-          ${d.hi ? '<div class="deal-badge-featured"><i data-lucide="flame"></i><span>مميز</span></div>' : ''}
-        </div>
-        <div class="deal-body">
-          <div class="deal-cat">${d.label}</div>
-          <div class="deal-name">${d.name}</div>
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:0.5rem">
-            <div class="deal-loc"><i data-lucide="map-pin"></i>${d.loc}</div>
-            <div class="deal-arrow">التفاصيل <i data-lucide="chevron-left"></i></div>
-          </div>
-        </div>
-      </div>`).join('');
-  }
-
+function renderDeals(cat) {
+  const list = cat==='all' ? deals : deals.filter(d=>d.cat===cat);
+  document.getElementById('countLabel').textContent = list.length + ' عروض متاحة';
+  document.getElementById('dealsGrid').innerHTML = list.map(d=>`
+    <div class="deal-card" onclick="openSheet(${deals.indexOf(d)})">
+      <div class="deal-top" style="background:${d.bg}">
+        <i data-lucide="${d.icon}"></i>
+        <div class="deal-discount${d.hi?' hi':''}">${d.discount}</div>
+      </div>
+      <div class="deal-body">
+        <div class="deal-cat">${d.label}</div>
+        <div class="deal-name">${d.name}</div>
+        <div class="deal-loc"><i data-lucide="map-pin"></i>${d.loc}</div>
+      </div>
+    </div>`).join('');
+    
+  // تفعيل الأيقونات الـ Lucide بعد بناء الكروت
   lucide.createIcons({ attrs: { strokeWidth: 1.5 } });
 }
 
-/* ─── CLEAR SEARCH ─────────────────────────────── */
-function clearSearch() {
-  searchQuery = '';
-  document.getElementById('searchInput').value = '';
-  document.getElementById('floatingSearchInput').value = '';
-  document.getElementById('clearBtn').classList.remove('visible');
-  document.getElementById('floatingClearBtn').classList.remove('visible');
-  applyFilters();
-  document.getElementById('searchInput').focus();
+function filter(cat, el) {
+  document.querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  renderDeals(cat);
 }
 
-/* ─── RESET FILTERS ────────────────────────────── */
-function resetFilters() {
-  currentCat = 'all';
-  currentDisc = 0;
-  clearSearch();
-  document.querySelectorAll('[data-cat]').forEach(p => p.classList.remove('active'));
-  document.querySelector('[data-cat="all"]').classList.add('active');
-  document.querySelectorAll('[data-disc]').forEach(p => p.classList.remove('active'));
-  document.querySelector('[data-disc="0"]').classList.add('active');
-  applyFilters();
-}
-
-/* ─── OPEN SHEET ───────────────────────────────── */
-function openSheet(id) {
-  const d = deals.find(x => x.id === id);
-  if (!d) return;
-
+function openSheet(i) {
+  const d = deals[i];
+  // وضع الأيقونات بداخل البطاقة المنبثقة
   document.getElementById('sIcon').innerHTML = `<i data-lucide="${d.icon}"></i>`;
-  document.getElementById('sDisc').innerHTML = `<i data-lucide="tag"></i> خصم ${d.discount}`;
+  document.getElementById('sDiscount').innerHTML = `<i data-lucide="tag"></i>&nbsp; خصم ${d.discount}`;
+  
   document.getElementById('sName').textContent = d.name;
   document.getElementById('sCat').textContent = d.label;
   document.getElementById('sDesc').textContent = d.desc;
   document.getElementById('sLoc').textContent = d.loc;
   document.getElementById('sHours').textContent = d.hours;
   document.getElementById('sPhone').textContent = d.phone;
-  document.getElementById('sDescFull').textContent = d.desc;
-
-  const featured = document.getElementById('sFeatured');
-  featured.style.display = d.hi ? 'flex' : 'none';
-
   document.getElementById('overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
-
+  
+  // إعادة تفعيل الأيقونات الـ Lucide للمحتوى المنبثق
   lucide.createIcons({ attrs: { strokeWidth: 1.5 } });
 }
 
-/* ─── CLOSE SHEET ──────────────────────────────── */
 function closeSheet(e) {
-  if (e && e.target !== document.getElementById('overlay') && e.target.closest('.sheet')) return;
+  if (e && e.target !== document.getElementById('overlay') && e.target.closest && e.target.closest('.sheet')) return;
   document.getElementById('overlay').classList.remove('open');
   document.body.style.overflow = '';
 }
 
-/* ─── CARD ANIMATION KEYFRAME ──────────────────── */
-const style = document.createElement('style');
-style.textContent = `@keyframes cardIn { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }`;
-document.head.appendChild(style);
+// fade in on scroll
+document.querySelectorAll('.fi').forEach(el=>{
+  new IntersectionObserver(entries=>{
+    entries.forEach(x=>{ if(x.isIntersecting) x.target.classList.add('in'); });
+  },{threshold:0.08}).observe(el);
+});
+
+// تحميل مبدئي للمحتوى
+renderDeals('all');
+
+// تفعيل الأيقونات الـ Lucide لعناصر الـ HTML الثابتة خارج الكروت
+lucide.createIcons({ attrs: { strokeWidth: 1.5 } });
+
 </script>
 </body>
 </html>
